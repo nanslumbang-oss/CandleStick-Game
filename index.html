@@ -1,461 +1,67 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Candlestick Dodge: Forex Runner</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font & Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b0e14;
-            color: #d1d5db;
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-            overflow-x: hidden;
-        }
-
-        .font-mono-custom {
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* TradingView Neon Grid Background Effect */
-        .chart-bg {
-            background-image: 
-                linear-gradient(to right, rgba(30, 41, 59, 0.3) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
-
-        /* Custom Styling for Canvas Glow */
-        canvas {
-            background: #131722;
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(51, 65, 85, 0.6);
-            border-radius: 12px;
-            display: block;
-            touch-action: none;
-        }
-
-        /* Pulse Animations for HUD */
-        @keyframes pulse-green {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.85; }
-        }
-        .pulse-green {
-            animation: pulse-green 1.5s infinite;
-        }
-
-        /* Ad Banner Placeholder Styling */
-        .ad-placeholder {
-            border: 1px dashed #334155;
-            background: rgba(15, 23, 42, 0.6);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Forex Runner - Candlestick Dodge</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen flex flex-col justify-between items-center p-2 sm:p-4 chart-bg select-none">
+<body>
 
-    <!-- TOP AD BANNER PLACEHOLDER -->
-    <div class="w-full max-w-2xl h-14 sm:h-16 ad-placeholder rounded-lg flex items-center justify-center my-2 text-xs text-slate-500 tracking-wider uppercase font-mono-custom">
-        <i class="fa-solid fa-rectangle-ad mr-2 text-slate-400"></i> Ad Space - Banner Top (Responsive)
+  <div class="game-container">
+    <!-- Ad Space Banner Top -->
+    <div class="ad-banner-top">
+      <span class="ad-tag">Ad</span> AD SPACE - BANNER TOP (RESPONSIVE)
     </div>
 
-    <!-- MAIN CONTAINER -->
-    <main class="w-full max-w-2xl flex flex-col items-center my-auto">
-
-        <!-- HEADER & HUD -->
-        <header class="w-full flex justify-between items-center mb-3 px-2 sm:px-0">
-            <div class="flex items-center space-x-2">
-                <div class="w-3 h-3 rounded-full bg-emerald-500 pulse-green"></div>
-                <h1 class="text-lg sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
-                    FOREX <span class="text-emerald-400 font-mono-custom">RUNNER</span>
-                </h1>
-            </div>
-
-            <!-- SCORE BOARD -->
-            <div class="flex items-center space-x-3 sm:space-x-6 font-mono-custom">
-                <div class="text-right">
-                    <div class="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase">P&L (Score)</div>
-                    <div id="scoreText" class="text-base sm:text-xl font-extrabold text-emerald-400">$0.00</div>
-                </div>
-                <div class="text-right">
-                    <div class="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase">ATH (High)</div>
-                    <div id="highScoreText" class="text-base sm:text-xl font-extrabold text-amber-400">$0.00</div>
-                </div>
-                <!-- MUTE BUTTON -->
-                <button id="soundToggleBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 sm:px-3 sm:py-1.5 rounded-lg border border-slate-700 text-xs sm:text-sm transition flex items-center gap-1">
-                    <i id="soundIcon" class="fa-solid fa-volume-high text-emerald-400"></i>
-                </button>
-            </div>
-        </header>
-
-        <!-- GAME CANVAS WRAPPER -->
-        <div class="relative w-full aspect-[4/3] sm:aspect-[16/9] max-h-[70vh] flex justify-center items-center">
-            <canvas id="gameCanvas" class="w-full h-full"></canvas>
-
-            <!-- START / GAME OVER OVERLAY -->
-            <div id="overlay" class="absolute inset-0 bg-slate-950/85 backdrop-blur-md rounded-xl flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-300">
-                <div class="mb-4">
-                    <div class="inline-flex p-3 sm:p-4 rounded-full bg-emerald-500/10 border border-emerald-500/30 mb-2">
-                        <i id="overlayIcon" class="fa-solid fa-chart-line text-3xl sm:text-4xl text-emerald-400"></i>
-                    </div>
-                    <h2 id="overlayTitle" class="text-2xl sm:text-4xl font-black text-white tracking-wide">CANDLESTICK DODGE</h2>
-                    <p id="overlaySub" class="text-xs sm:text-sm text-slate-400 mt-1 max-w-sm">
-                        Tap layarmu atau tekan <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200">SPACE</kbd> untuk mengontrol titik harga naik & hindari candle merah!
-                    </p>
-                </div>
-
-                <!-- OVERLAY STATS (HIDDEN ON FIRST LOAD) -->
-                <div id="finalStats" class="hidden grid-cols-2 gap-3 w-full max-w-xs mb-5 font-mono-custom text-left">
-                    <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
-                        <div class="text-[10px] text-slate-400 uppercase">Profit Akhir</div>
-                        <div id="finalScore" class="text-lg font-bold text-emerald-400">$0</div>
-                    </div>
-                    <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
-                        <div class="text-[10px] text-slate-400 uppercase">Multiplier Max</div>
-                        <div id="finalMulti" class="text-lg font-bold text-amber-400">1.0x</div>
-                    </div>
-                </div>
-
-                <!-- PLAY BUTTON -->
-                <button id="startBtn" class="w-full max-w-xs py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-base sm:text-lg shadow-lg shadow-emerald-500/25 transition transform active:scale-95 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-play"></i> START TRADING
-                </button>
-
-                <!-- CONTROLS HINT -->
-                <div class="mt-4 text-[11px] text-slate-500 flex items-center gap-2">
-                    <span><i class="fa-solid fa-hand-pointer"></i> Tap / Hold Layar (HP)</span>
-                    <span>•</span>
-                    <span><i class="fa-solid fa-keyboard"></i> Space / Arrow Up (Desktop)</span>
-                </div>
-            </div>
+    <!-- Header UI / Scoreboard -->
+    <header class="game-header">
+      <div class="brand">
+        <span class="dot-status"></span>
+        <span class="brand-title">FOREX RUNNER</span>
+      </div>
+      <div class="score-board">
+        <div class="score-box">
+          <span class="score-label">P&L (SCORE)</span>
+          <span id="scoreText" class="score-value profit">$0.00</span>
         </div>
-
-        <!-- CONTROLS FOOTER FOR MOBILE TOUCH -->
-        <div class="w-full mt-3 flex justify-between items-center text-xs text-slate-400 font-mono-custom px-1">
-            <span class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div> Bullish = Profit ($)</span>
-            <span class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div> Bearish = Margin Call!</span>
-            <span class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div> XAU/USD = Multiplier</span>
+        <div class="score-box">
+          <span class="score-label">ATH (HIGH)</span>
+          <span id="athText" class="score-value ath">$0.00</span>
         </div>
-    </main>
+        <button id="soundBtn" class="icon-btn" aria-label="Toggle Sound">🔊</button>
+      </div>
+    </header>
 
-    <!-- BOTTOM AD BANNER PLACEHOLDER -->
-    <div class="w-full max-w-2xl h-14 sm:h-16 ad-placeholder rounded-lg flex items-center justify-center my-2 text-xs text-slate-500 tracking-wider uppercase font-mono-custom">
-        <i class="fa-solid fa-rectangle-ad mr-2 text-slate-400"></i> Ad Space - Banner Bottom (Responsive)
-    </div>
+    <!-- Canvas & Overlay Container -->
+    <div class="canvas-wrapper">
+      <canvas id="gameCanvas" width="400" height="500"></canvas>
 
-    <!-- GAME LOGIC SCRIPT -->
-    <script>
-        /**
-         * CANDLESTICK DODGE: FOREX RUNNER
-         * Pure Canvas 2D Game Engine with Web Audio API SFX
-         */
-
-        // Canvas Setup & Responsiveness
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const overlay = document.getElementById('overlay');
-        const startBtn = document.getElementById('startBtn');
-        const scoreText = document.getElementById('scoreText');
-        const highScoreText = document.getElementById('highScoreText');
-        const soundToggleBtn = document.getElementById('soundToggleBtn');
-        const soundIcon = document.getElementById('soundIcon');
+      <!-- Start / Game Over Card Overlay -->
+      <div id="startOverlay" class="overlay-card">
+        <div class="icon-header">📈</div>
+        <h1 id="overlayTitle">CANDLESTICK DODGE</h1>
+        <p id="overlaySub">Tap layarmu atau tekan <kbd>SPACE</kbd> untuk mengontrol titik harga naik & hindari candle merah!</p>
         
-        // Overlay elements for Game Over
-        const overlayTitle = document.getElementById('overlayTitle');
-        const overlaySub = document.getElementById('overlaySub');
-        const overlayIcon = document.getElementById('overlayIcon');
-        const finalStats = document.getElementById('finalStats');
-        const finalScore = document.getElementById('finalScore');
-        const finalMulti = document.getElementById('finalMulti');
+        <button id="startBtn" class="btn-start">► START TRADING</button>
 
-        let width = 800;
-        let height = 450;
+        <div class="control-hints">
+          <span>📱 Tap / Hold Layar (HP)</span>
+          <span>⌨️ Space / Arrow Up (Desktop)</span>
+        </div>
+      </div>
+    </div>
 
-        function resizeCanvas() {
-            const container = canvas.parentElement;
-            width = container.clientWidth;
-            height = container.clientHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+    <!-- Legend Info -->
+    <footer class="game-legend">
+      <div class="legend-item"><span class="dot green"></span> Bullish = Profit ($)</div>
+      <div class="legend-item"><span class="dot red"></span> Bearish = Margin Call!</div>
+      <div class="legend-item"><span class="dot yellow"></span> XAU/USD = Multiplier</div>
+    </footer>
+  </div>
 
-        // Game State Variables
-        let isPlaying = false;
-        let isGameOver = false;
-        let score = 0;
-        let highScore = parseFloat(localStorage.getItem('forex_runner_high_score')) || 0;
-        let multiplier = 1.0;
-        let frameCount = 0;
-        let speed = 3.5;
-        let isHolding = false;
-        let soundEnabled = true;
+  <!-- SCRIPT UTAMA -->
+  <script src="script.js"></script>
+</body>
+</html>
 
-        highScoreText.innerText = `$${highScore.toFixed(2)}`;
-
-        // Web Audio API Synthesizer
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx = null;
-
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new AudioContext();
-            }
-        }
-
-        function playSound(type) {
-            if (!soundEnabled || !audioCtx) return;
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            const now = audioCtx.currentTime;
-
-            if (type === 'jump') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(280, now);
-                osc.frequency.exponentialRampToValueAtTime(560, now + 0.08);
-                gain.gain.setValueAtTime(0.15, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
-                osc.start(now);
-                osc.stop(now + 0.08);
-            } else if (type === 'coin') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(600, now);
-                osc.frequency.setValueAtTime(850, now + 0.05);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
-                osc.start(now);
-                osc.stop(now + 0.15);
-            } else if (type === 'multiplier') {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(520, now);
-                osc.frequency.setValueAtTime(780, now + 0.08);
-                osc.frequency.setValueAtTime(1040, now + 0.16);
-                gain.gain.setValueAtTime(0.15, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
-                osc.start(now);
-                osc.stop(now + 0.25);
-            } else if (type === 'gameover') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(300, now);
-                osc.frequency.exponentialRampToValueAtTime(80, now + 0.4);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
-                osc.start(now);
-                osc.stop(now + 0.4);
-            }
-        }
-
-        // Sound Toggle
-        soundToggleBtn.addEventListener('click', () => {
-            soundEnabled = !soundEnabled;
-            if (soundEnabled) {
-                soundIcon.className = "fa-solid fa-volume-high text-emerald-400";
-            } else {
-                soundIcon.className = "fa-solid fa-volume-xmark text-rose-500";
-            }
-        });
-
-        // Player Dot Object (Green Price Action)
-        const player = {
-            x: 80,
-            y: 200,
-            radius: 8,
-            vy: 0,
-            gravity: 0.38,
-            lift: -0.75,
-            maxSpeedY: 7,
-            trail: [],
-
-            reset() {
-                this.y = height / 2;
-                this.vy = 0;
-                this.trail = [];
-            },
-
-            update() {
-                if (isHolding) {
-                    this.vy += this.lift;
-                } else {
-                    this.vy += this.gravity;
-                }
-
-                // Cap vertical speed
-                if (this.vy > this.maxSpeedY) this.vy = this.maxSpeedY;
-                if (this.vy < -this.maxSpeedY) this.vy = -this.maxSpeedY;
-
-                this.y += this.vy;
-
-                // Screen boundary constraints
-                if (this.y - this.radius < 0) {
-                    this.y = this.radius;
-                    this.vy = 0;
-                }
-                if (this.y + this.radius > height) {
-                    triggerGameOver("MARGIN CALL!", "Harga jatuh melebih ambang batas batas ekuitas!");
-                }
-
-                // Record trail history for smooth price line
-                this.trail.push({ x: this.x, y: this.y });
-                if (this.trail.length > 20) {
-                    this.trail.shift();
-                }
-                // Shift trail left to simulate movement
-                for (let pt of this.trail) {
-                    pt.x -= speed * 0.5;
-                }
-            },
-
-            draw() {
-                // Draw Price History Glow Line (TradingView Style)
-                if (this.trail.length > 1) {
-                    ctx.beginPath();
-                    ctx.moveTo(this.trail[0].x, this.trail[0].y);
-                    for (let i = 1; i < this.trail.length; i++) {
-                        ctx.lineTo(this.trail[i].x, this.trail[i].y);
-                    }
-                    ctx.strokeStyle = '#10b981';
-                    ctx.lineWidth = 3;
-                    ctx.shadowColor = '#10b981';
-                    ctx.shadowBlur = 10;
-                    ctx.stroke();
-                    ctx.shadowBlur = 0; // Reset shadow
-                }
-
-                // Draw Player Glowing Green Dot
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = '#34d399';
-                ctx.shadowColor = '#34d399';
-                ctx.shadowBlur = 15;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-
-                // Inner core
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius * 0.4, 0, Math.PI * 2);
-                ctx.fillStyle = '#ffffff';
-                ctx.fill();
-            }
-        };
-
-        // Game Entities Arrays
-        let obstacles = []; // Bearish Wicks & Candles
-        let items = [];     // Collectibles: Green Profit, Gold Coins, TP Badges
-        let particles = []; // Visual Burst Effects
-
-        // Obstacle (Candlestick) Class
-        class Obstacle {
-            constructor() {
-                this.width = Math.random() * 16 + 20; // Body width
-                this.x = width + this.width;
-                this.isTop = Math.random() < 0.5;
-                this.height = Math.random() * (height * 0.42) + 50; // Candle body height
-                this.wickWidth = 4;
-                this.wickHeight = this.height + Math.random() * 40 + 20; // Full wick height
-            }
-
-            update() {
-                this.x -= speed;
-            }
-
-            draw() {
-                const wickX = this.x + this.width / 2 - this.wickWidth / 2;
-                ctx.fillStyle = '#f43f5e'; // Bearish Red
-
-                if (this.isTop) {
-                    // Top Wick
-                    ctx.fillRect(wickX, 0, this.wickWidth, this.wickHeight);
-                    // Top Candle Body
-                    ctx.fillRect(this.x, 0, this.width, this.height);
-                    // Body stroke/border
-                    ctx.strokeStyle = '#be123c';
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(this.x, 0, this.width, this.height);
-                } else {
-                    // Bottom Wick
-                    ctx.fillRect(wickX, height - this.wickHeight, this.wickWidth, this.wickHeight);
-                    // Bottom Candle Body
-                    ctx.fillRect(this.x, height - this.height, this.width, this.height);
-                    // Body stroke
-                    ctx.strokeStyle = '#be123c';
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(this.x, height - this.height, this.width, this.height);
-                }
-            }
-
-            collidesWith(p) {
-                const wickX = this.x + this.width / 2 - this.wickWidth / 2;
-
-                // Check collision with Body
-                let bodyY = this.isTop ? 0 : height - this.height;
-                if (p.x + p.radius > this.x && p.x - p.radius < this.x + this.width) {
-                    if (p.y + p.radius > bodyY && p.y - p.radius < bodyY + this.height) {
-                        return true;
-                    }
-                }
-
-                // Check collision with Wick
-                let wickY = this.isTop ? 0 : height - this.wickHeight;
-                if (p.x + p.radius > wickX && p.x - p.radius < wickX + this.wickWidth) {
-                    if (p.y + p.radius > wickY && p.y - p.radius < wickY + this.wickHeight) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
-
-        // Collectible Class (Profit Candles / Gold / TP)
-        class Collectible {
-            constructor() {
-                this.x = width + 30;
-                this.y = Math.random() * (height - 100) + 50;
-                this.radius = 12;
-                // Type: 0 = Bullish Green ($), 1 = Gold Coin (XAU), 2 = Take Profit (TP)
-                const rand = Math.random();
-                if (rand < 0.6) this.type = 'profit';
-                else if (rand < 0.85) this.type = 'gold';
-                else this.type = 'tp';
-            }
-
-            update() {
-                this.x -= speed;
-            }
-
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-
-                if (this.type === 'profit') {
-                    // Green Bullish Candle Icon
-                    ctx.fillStyle = '#10b981';
-                    ctx.shadowColor = '#10b981';
-                    ctx.shadowBlur = 10;
-                    ctx.fillRect(-6, -10, 12, 20);
-                    ctx.fillRect(-1.5, -15, 3, 30); // Wick
-                    ctx.shadowBlur = 0;
-                } else if (this.type === 'gold') {
-                    // Gold Coin XAU/USD
-                    ctx.beginPath();
-                    ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = '#f59e0b';
-                    ctx.shadowColor = '#f59e0b';
-                    ctx.shadowBlur = 12;
-                    ctx.fill();
-                    ctx.shadowBlur = 0
