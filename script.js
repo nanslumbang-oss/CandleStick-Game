@@ -1,172 +1,162 @@
 // ====================================================
-// FOREX RUNNER - CANDLESTICK DODGE GAME ENGINE
+// FOREX RUNNER - CANDLESTICK DODGE ENGINE (FIXED START)
 // ====================================================
 
 document.addEventListener('DOMContentLoaded', () => {
 
   // 1. ELEMEN UI & CANVAS
   const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas ? canvas.getContext('2d') : null;
   
   const startBtn = document.getElementById('startBtn');
   const startOverlay = document.getElementById('startOverlay');
   const overlayTitle = document.getElementById('overlayTitle');
   const overlaySub = document.getElementById('overlaySub');
+  const overlayIcon = document.getElementById('overlayIcon');
+  const resultBox = document.getElementById('resultBox');
+  const finalScore = document.getElementById('finalScore');
   const scoreText = document.getElementById('scoreText');
   const athText = document.getElementById('athText');
   const soundBtn = document.getElementById('soundBtn');
 
-  // 2. VARIABEL GAME STATE
+  // 2. STATE GAME
   let isRunning = false;
   let isSoundOn = true;
   let score = 0;
   let ath = parseFloat(localStorage.getItem('forex_runner_ath')) || 0;
   let animationFrameId = null;
 
-  // Render ATH Awal
-  athText.innerText = `$${ath.toFixed(2)}`;
+  if (athText) athText.innerText = `$${ath.toFixed(2)}`;
 
-  // 3. GAME OBJECTS
+  // 3. PLAYER OBJECT
   const player = {
     x: 60,
     y: 250,
-    radius: 6,
+    radius: 7,
     velocity: 0,
-    gravity: 0.35,
-    jumpStrength: -6.5,
-    isHolding: false
+    gravity: 0.38,
+    jumpStrength: -6.8
   };
 
   let candles = [];
   let frameCount = 0;
-  let gameSpeed = 2.5;
+  let gameSpeed = 2.6;
 
-  // 4. LOGIKA UTAMA: START GAME (FIX MACET HIT/TOUCH)
+  // 4. FUNGSI UTAMA START GAME
   function startGame() {
     if (isRunning) return;
 
-    // Reset State
     isRunning = true;
     score = 0;
-    gameSpeed = 2.5;
-    player.y = canvas.height / 2;
+    gameSpeed = 2.6;
+    if (canvas) player.y = canvas.height / 2;
     player.velocity = 0;
     candles = [];
     frameCount = 0;
-    scoreText.innerText = `$0.00`;
 
-    // Sembunyikan Overlay
-    startOverlay.style.display = 'none';
+    if (scoreText) scoreText.innerText = `$0.00`;
 
-    // Cancel Frame Lama Jika Ada
+    // Sembunyikan Overlay Menu Start
+    if (startOverlay) {
+      startOverlay.style.display = 'none';
+    }
+
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
-
-    // Run Game Loop
     gameLoop();
   }
 
-  // 5. EVENT LISTENERS TOMBOL START (DUAL LISTEN: CLICK & TOUCH)
+  // 5. EVENT LISTENER TOMBOL START (AMAN UNTUK HP & PC)
   if (startBtn) {
-    const triggerStart = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    const handleStartEvent = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       startGame();
     };
 
-    startBtn.addEventListener('click', triggerStart);
-    startBtn.addEventListener('touchstart', triggerStart, { passive: false });
+    // Binding Click & Touch secara terpisah tanpa bentrok
+    startBtn.onclick = handleStartEvent;
+    startBtn.ontouchstart = handleStartEvent;
   }
 
-  // 6. CONTROL INPUT (TOUCH HP & KEYBOARD SPACE)
-  function pressAction() {
+  // 6. KONTROL IN-GAME (TAP / HOLD LAYAR & SPACE)
+  function jump() {
     if (!isRunning) return;
     player.velocity = player.jumpStrength;
-    player.isHolding = true;
   }
 
-  function releaseAction() {
-    player.isHolding = false;
+  if (canvas) {
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (!isRunning) startGame();
+      else jump();
+    }, { passive: false });
+
+    canvas.addEventListener('mousedown', (e) => {
+      if (!isRunning) startGame();
+      else jump();
+    });
   }
 
-  // Touch HP Canvas
-  canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    if (!isRunning) startGame();
-    else pressAction();
-  }, { passive: false });
-
-  canvas.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    releaseAction();
-  });
-
-  // Keyboard Desktop
   window.addEventListener('keydown', (e) => {
     if (e.code === 'Space' || e.code === 'ArrowUp') {
       e.preventDefault();
-      if (!isRunning && startOverlay.style.display !== 'none') {
-        startGame();
-      } else {
-        pressAction();
-      }
+      if (!isRunning) startGame();
+      else jump();
     }
   });
 
-  window.addEventListener('keyup', (e) => {
-    if (e.code === 'Space' || e.code === 'ArrowUp') {
-      releaseAction();
-    }
-  });
+  if (soundBtn) {
+    soundBtn.addEventListener('click', () => {
+      isSoundOn = !isSoundOn;
+      soundBtn.innerText = isSoundOn ? '🔊' : '🔇';
+    });
+  }
 
-  // Sound Toggle Button
-  soundBtn.addEventListener('click', () => {
-    isSoundOn = !isSoundOn;
-    soundBtn.innerText = isSoundOn ? '🔊' : '🔇';
-  });
-
-  // 7. GAME LOOP & ANIMATION
+  // 7. GAME LOOP
   function gameLoop() {
-    if (!isRunning) return;
+    if (!isRunning || !ctx || !canvas) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     frameCount++;
 
-    // Spawning Candlestick Obstacles
-    if (frameCount % 90 === 0) {
+    // Spawn Candlesticks
+    if (frameCount % 85 === 0) {
       spawnCandle();
     }
 
-    // Update & Draw Player
+    // Update Player
     player.velocity += player.gravity;
     player.y += player.velocity;
 
-    // Batas Layar Atas & Bawah
+    // Batas Atas & Bawah
     if (player.y < player.radius) player.y = player.radius;
     if (player.y > canvas.height - player.radius) {
       gameOver('MARGIN CALL! (Hit Bottom)');
       return;
     }
 
-    // Gambar Line / Trail Player
+    // Gambar Player
     ctx.beginPath();
     ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
     ctx.fillStyle = '#10b981';
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = 12;
     ctx.shadowColor = '#10b981';
     ctx.fill();
-    ctx.shadowBlur = 0; // Reset Shadow
+    ctx.shadowBlur = 0;
 
-    // Update & Draw Candlesticks
+    // Render Candlesticks
     for (let i = candles.length - 1; i >= 0; i--) {
       let c = candles[i];
       c.x -= gameSpeed;
 
-      // Draw Wicks & Body
+      // Draw Wick & Body
       ctx.fillStyle = c.type === 'bear' ? '#ef4444' : '#10b981';
-      ctx.fillRect(c.x + c.width / 2 - 1, c.topWickY, 2, c.bottomWickY - c.topWickY); // Wick
-      ctx.fillRect(c.x, c.y, c.width, c.height); // Body
+      ctx.fillRect(c.x + c.width / 2 - 1, c.topWickY, 2, c.bottomWickY - c.topWickY);
+      ctx.fillRect(c.x, c.y, c.width, c.height);
 
-      // Collision Detection
+      // Tabrakan (Collision Detection)
       if (
         player.x + player.radius > c.x &&
         player.x - player.radius < c.x + c.width &&
@@ -178,30 +168,29 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         } else if (!c.collected) {
           c.collected = true;
-          score += 10.5;
-          scoreText.innerText = `$${score.toFixed(2)}`;
+          score += 10.0;
+          if (scoreText) scoreText.innerText = `$${score.toFixed(2)}`;
         }
       }
 
-      // Remove Offscreen
+      // Hapus yang keluar layar
       if (c.x + c.width < 0) {
         candles.splice(i, 1);
-        score += 1.0; // Point pass
-        scoreText.innerText = `$${score.toFixed(2)}`;
+        score += 1.0;
+        if (scoreText) scoreText.innerText = `$${score.toFixed(2)}`;
       }
     }
 
-    // Difficulty Increment
     if (frameCount % 300 === 0) gameSpeed += 0.2;
-
     animationFrameId = requestAnimationFrame(gameLoop);
   }
 
-  // 8. SPAWN CANDLESTICK LOGIC
+  // 8. SPAWN CANDLE LOGIC
   function spawnCandle() {
-    const candleWidth = 24;
-    const isBear = Math.random() > 0.35; // 65% Merah (Obstacle), 35% Hijau (Profit)
-    const candleHeight = Math.floor(Math.random() * 150) + 60;
+    if (!canvas) return;
+    const candleWidth = 26;
+    const isBear = Math.random() > 0.35;
+    const candleHeight = Math.floor(Math.random() * 160) + 60;
     const yPos = Math.random() * (canvas.height - candleHeight - 40) + 20;
 
     candles.push({
@@ -216,41 +205,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-    // 9. GAME OVER HANDLER (UPDATED WITH UI MODE)
+  // 9. GAME OVER HANDLER
   function gameOver(reason) {
     isRunning = false;
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
 
-    // Update High Score (ATH)
     if (score > ath) {
       ath = score;
       localStorage.setItem('forex_runner_ath', ath);
-      athText.innerText = `$${ath.toFixed(2)}`;
+      if (athText) athText.innerText = `$${ath.toFixed(2)}`;
     }
 
-    // Ubah UI Overlay ke Mode Game Over
-    const overlayIcon = document.getElementById('overlayIcon');
-    const resultBox = document.getElementById('resultBox');
-    const finalScore = document.getElementById('finalScore');
-
-    startOverlay.classList.remove('mode-start');
-    startOverlay.classList.add('mode-gameover');
+    if (startOverlay) {
+      startOverlay.classList.remove('mode-start');
+      startOverlay.classList.add('mode-gameover');
+      startOverlay.style.display = 'flex';
+    }
 
     if (overlayIcon) overlayIcon.innerHTML = '<span class="icon-emoji">💥</span>';
-    overlayTitle.innerText = 'MARGIN CALL!';
-    overlaySub.innerText = reason;
+    if (overlayTitle) overlayTitle.innerText = 'MARGIN CALL!';
+    if (overlaySub) overlaySub.innerText = reason;
     
     if (resultBox && finalScore) {
       resultBox.style.display = 'block';
       finalScore.innerText = `$${score.toFixed(2)}`;
     }
 
-    startBtn.innerHTML = '<span>🔄 RESTART TRADING</span>';
-    startOverlay.style.display = 'flex';
+    if (startBtn) startBtn.innerHTML = '<span>🔄 RESTART TRADING</span>';
   }
-  
-// ====================================================
-// TEMPAT SCRIPT UPDATE BARU / FITUR TAMBAHAN KAMU
-// (Taruh kode baru/pengembangan fitur kamu di bawah baris ini)
-// ====================================================
-  
+
+});
+      
