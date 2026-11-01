@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 9. GAME OVER HANDLER
+    // 9. GAME OVER HANDLER (UPDATED WITH UI MODE)
   function gameOver(reason) {
     isRunning = false;
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
@@ -228,15 +228,27 @@ document.addEventListener('DOMContentLoaded', () => {
       athText.innerText = `$${ath.toFixed(2)}`;
     }
 
-    // Show Overlay Mode Game Over
-    overlayTitle.innerText = 'GAME OVER';
-    overlaySub.innerText = `${reason}\nTotal P&L Score: $${score.toFixed(2)}`;
-    startBtn.innerText = '🔄 RESTART TRADING';
+    // Ubah UI Overlay ke Mode Game Over
+    const overlayIcon = document.getElementById('overlayIcon');
+    const resultBox = document.getElementById('resultBox');
+    const finalScore = document.getElementById('finalScore');
+
+    startOverlay.classList.remove('mode-start');
+    startOverlay.classList.add('mode-gameover');
+
+    if (overlayIcon) overlayIcon.innerHTML = '<span class="icon-emoji">💥</span>';
+    overlayTitle.innerText = 'MARGIN CALL!';
+    overlaySub.innerText = reason;
+    
+    if (resultBox && finalScore) {
+      resultBox.style.display = 'block';
+      finalScore.innerText = `$${score.toFixed(2)}`;
+    }
+
+    startBtn.innerHTML = '<span>🔄 RESTART TRADING</span>';
     startOverlay.style.display = 'flex';
   }
-
-});
-
+  
 // ====================================================
 // TEMPAT SCRIPT UPDATE BARU / FITUR TAMBAHAN KAMU
 // (Taruh kode baru/pengembangan fitur kamu di bawah baris ini)
