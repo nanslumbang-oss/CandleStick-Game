@@ -185,25 +185,40 @@ document.addEventListener('DOMContentLoaded', () => {
     animationFrameId = requestAnimationFrame(gameLoop);
   }
 
-  // 8. SPAWN CANDLE LOGIC
+    // 8. SPAWN CANDLE LOGIC (CANDLE ATAP & BAWAH Varian Lengkap)
   function spawnCandle() {
     if (!canvas) return;
     const candleWidth = 26;
-    const isBear = Math.random() > 0.35;
-    const candleHeight = Math.floor(Math.random() * 160) + 60;
-    const yPos = Math.random() * (canvas.height - candleHeight - 40) + 20;
+    const isBear = Math.random() > 0.35; // 65% Merah, 35% Hijau
+    const candleHeight = Math.floor(Math.random() * 150) + 80; // Ukuran candle lebih bervariasi
+
+    // Acak Tipe Posisi: 40% Atap (Gantung), 40% Bawah, 20% Melayang Tengah
+    let yPos;
+    const posType = Math.random();
+
+    if (posType < 0.4) {
+      // 1. CANDLE GANTUNG DARIPADA ATAP (yPos = 0)
+      yPos = 0;
+    } else if (posType < 0.8) {
+      // 2. CANDLE NEMPEL DARI BAWAH
+      yPos = canvas.height - candleHeight;
+    } else {
+      // 3. CANDLE MELAYANG DI TENGAH
+      yPos = Math.random() * (canvas.height - candleHeight - 40) + 20;
+    }
 
     candles.push({
       x: canvas.width,
       y: yPos,
       width: candleWidth,
       height: candleHeight,
-      topWickY: Math.max(0, yPos - 20),
-      bottomWickY: Math.min(canvas.height, yPos + candleHeight + 20),
+      topWickY: Math.max(0, yPos - 15),
+      bottomWickY: Math.min(canvas.height, yPos + candleHeight + 15),
       type: isBear ? 'bear' : 'bull',
       collected: false
     });
   }
+  
 
   // 9. GAME OVER HANDLER
   function gameOver(reason) {
