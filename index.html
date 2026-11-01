@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Trillionaire Idle 3D</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Three.js CDN untuk Render Aset 3D -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- Top Bar: Financial Status -->
+  <header class="status-bar">
+    <div class="stat-item">
+      <span class="label">NET WORTH</span>
+      <span id="moneyText" class="val-money">$0</span>
+    </div>
+    <div class="stat-item">
+      <span class="label">INCOME / SEC</span>
+      <span id="ppsText" class="val-pps">+$0/s</span>
+    </div>
+  </header>
+
+  <!-- 3D Asset Showcase Canvas Area -->
+  <div class="canvas-container">
+    <canvas id="threeCanvas"></canvas>
+    <div class="asset-title-badge">
+      <span class="badge-label">ASET TERMEWAH SAAT INI</span>
+      <h2 id="assetName">📦 Kardus Bekas</h2>
+    </div>
+  </div>
+
+  <!-- Main Interaction Area -->
+  <main class="game-body">
+    <!-- Big Tap Button -->
+    <button id="tapBtn" class="btn-tap">
+      <span class="tap-icon">💸</span>
+      <span class="tap-label">TAP CARI DUIT!</span>
+    </button>
+
+    <!-- Shop Tabs & List -->
+    <div class="shop-container">
+      <div class="shop-header">
+        <h3>KATALOG SULTAN</h3>
+      </div>
+      <div id="shopList" class="shop-list">
+        <!-- Item toko di-generate lewat script.js -->
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
