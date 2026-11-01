@@ -1,5 +1,5 @@
 // ====================================================
-// FOREX RUNNER - CANDLESTICK DODGE ENGINE (FIXED START)
+// FOREX RUNNER - CANDLESTICK DODGE ENGINE (FULL FIX)
 // ====================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gameLoop();
   }
 
-  // 5. EVENT LISTENER TOMBOL START (AMAN UNTUK HP & PC)
+  // 5. EVENT LISTENER TOMBOL START (DUAL LISTEN HP & PC)
   if (startBtn) {
     const handleStartEvent = (e) => {
       if (e) {
@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
       startGame();
     };
 
-    // Binding Click & Touch secara terpisah tanpa bentrok
     startBtn.onclick = handleStartEvent;
     startBtn.ontouchstart = handleStartEvent;
   }
@@ -146,12 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fill();
     ctx.shadowBlur = 0;
 
-        // Render & Update Candlesticks
+    // Render Candlesticks
     for (let i = candles.length - 1; i >= 0; i--) {
       let c = candles[i];
       c.x -= gameSpeed;
 
-      // UPDATE KHUSUS VOLATILE CANDLE (Atur Posisi Y Naik-Turun)
+      // UPDATE KHUSUS VOLATILE CANDLE (Naik-Turun Mengayun)
       if (c.isVolatile) {
         c.offset += c.speed;
         c.y = c.baseY + Math.sin(c.offset) * c.amplitude;
@@ -164,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillRect(c.x + c.width / 2 - 1, c.topWickY, 2, c.bottomWickY - c.topWickY);
       ctx.fillRect(c.x, c.y, c.width, c.height);
 
-      // Collision Detection
+      // Tabrakan (Collision Detection)
       if (
         player.x + player.radius > c.x &&
         player.x - player.radius < c.x + c.width &&
@@ -188,86 +187,121 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scoreText) scoreText.innerText = `$${score.toFixed(2)}`;
       }
     }
-    
 
-// 8. SPAWN CANDLE LOGIC (VARIAN PATTERN PASAR)
-function spawnCandle() {
-  if (!canvas) return;
-  const candleWidth = 26;
-  const patternType = Math.random();
-
-  // A. PATTERN 1: SPREAD GAP (Atas & Bawah Barengan - 35% Peluang)
-  if (patternType < 0.35) {
-    const gapSize = 135; // Ukuran celah untuk player melintas
-    const minHeight = 50;
-    const topHeight = Math.floor(Math.random() * (canvas.height - gapSize - minHeight * 2)) + minHeight;
-    const bottomY = topHeight + gapSize;
-    const bottomHeight = canvas.height - bottomY;
-
-    // Candle Atas (Menempel Atap)
-    candles.push({
-      x: canvas.width,
-      y: 0,
-      width: candleWidth,
-      height: topHeight,
-      topWickY: 0,
-      bottomWickY: Math.min(canvas.height, topHeight + 15),
-      type: 'bear',
-      isVolatile: false,
-      collected: false
-    });
-
-    // Candle Bawah (Menempel Dasar)
-    candles.push({
-      x: canvas.width,
-      y: bottomY,
-      width: candleWidth,
-      height: bottomHeight,
-      topWickY: Math.max(0, bottomY - 15),
-      bottomWickY: canvas.height,
-      type: 'bear',
-      isVolatile: false,
-      collected: false
-    });
-
-  // B. PATTERN 2: VOLATILE CANDLE (Naik-Turun Mengayun - 30% Peluang)
-  } else if (patternType < 0.65) {
-    const candleHeight = Math.floor(Math.random() * 90) + 70;
-    const baseY = Math.random() * (canvas.height - candleHeight - 100) + 50;
-
-    candles.push({
-      x: canvas.width,
-      y: baseY,
-      baseY: baseY,
-      width: candleWidth,
-      height: candleHeight,
-      topWickY: baseY - 15,
-      bottomWickY: baseY + candleHeight + 15,
-      type: 'bear',
-      isVolatile: true, // Tanda candle bergerak dinamis
-      amplitude: 35,    // Jarak ayunan naik-turun
-      speed: 0.06,      // Kecepatan ayunan
-      offset: Math.random() * Math.PI,
-      collected: false
-    });
-
-  // C. PATTERN 3: SINGLE CANDLE / PROFIT BULLISH (35% Peluang)
-  } else {
-    const isBear = Math.random() > 0.4; // 60% Bearish, 40% Bullish Profit
-    const candleHeight = Math.floor(Math.random() * 140) + 70;
-    const isTop = Math.random() < 0.5;
-    const yPos = isTop ? 0 : (canvas.height - candleHeight);
-
-    candles.push({
-      x: canvas.width,
-      y: yPos,
-      width: candleWidth,
-      height: candleHeight,
-      topWickY: Math.max(0, yPos - 15),
-      bottomWickY: Math.min(canvas.height, yPos + candleHeight + 15),
-      type: isBear ? 'bear' : 'bull',
-      isVolatile: false,
-      collected: false
-    });
+    if (frameCount % 300 === 0) gameSpeed += 0.2;
+    animationFrameId = requestAnimationFrame(gameLoop);
   }
-}
+
+  // 8. SPAWN CANDLE LOGIC (VARIAN PATTERN PASAR)
+  function spawnCandle() {
+    if (!canvas) return;
+    const candleWidth = 26;
+    const patternType = Math.random();
+
+    // A. PATTERN 1: SPREAD GAP (Atas & Bawah Barengan - 35% Peluang)
+    if (patternType < 0.35) {
+      const gapSize = 135; // Celah melintas
+      const minHeight = 50;
+      const topHeight = Math.floor(Math.random() * (canvas.height - gapSize - minHeight * 2)) + minHeight;
+      const bottomY = topHeight + gapSize;
+      const bottomHeight = canvas.height - bottomY;
+
+      // Candle Atas (Menempel Atap)
+      candles.push({
+        x: canvas.width,
+        y: 0,
+        width: candleWidth,
+        height: topHeight,
+        topWickY: 0,
+        bottomWickY: Math.min(canvas.height, topHeight + 15),
+        type: 'bear',
+        isVolatile: false,
+        collected: false
+      });
+
+      // Candle Bawah (Menempel Dasar)
+      candles.push({
+        x: canvas.width,
+        y: bottomY,
+        width: candleWidth,
+        height: bottomHeight,
+        topWickY: Math.max(0, bottomY - 15),
+        bottomWickY: canvas.height,
+        type: 'bear',
+        isVolatile: false,
+        collected: false
+      });
+
+    // B. PATTERN 2: VOLATILE CANDLE (Naik-Turun Mengayun - 30% Peluang)
+    } else if (patternType < 0.65) {
+      const candleHeight = Math.floor(Math.random() * 90) + 70;
+      const baseY = Math.random() * (canvas.height - candleHeight - 100) + 50;
+
+      candles.push({
+        x: canvas.width,
+        y: baseY,
+        baseY: baseY,
+        width: candleWidth,
+        height: candleHeight,
+        topWickY: baseY - 15,
+        bottomWickY: baseY + candleHeight + 15,
+        type: 'bear',
+        isVolatile: true,
+        amplitude: 35,
+        speed: 0.06,
+        offset: Math.random() * Math.PI,
+        collected: false
+      });
+
+    // C. PATTERN 3: SINGLE CANDLE / PROFIT BULLISH (35% Peluang)
+    } else {
+      const isBear = Math.random() > 0.4;
+      const candleHeight = Math.floor(Math.random() * 140) + 70;
+      const isTop = Math.random() < 0.5;
+      const yPos = isTop ? 0 : (canvas.height - candleHeight);
+
+      candles.push({
+        x: canvas.width,
+        y: yPos,
+        width: candleWidth,
+        height: candleHeight,
+        topWickY: Math.max(0, yPos - 15),
+        bottomWickY: Math.min(canvas.height, yPos + candleHeight + 15),
+        type: isBear ? 'bear' : 'bull',
+        isVolatile: false,
+        collected: false
+      });
+    }
+  }
+
+  // 9. GAME OVER HANDLER
+  function gameOver(reason) {
+    isRunning = false;
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+    if (score > ath) {
+      ath = score;
+      localStorage.setItem('forex_runner_ath', ath);
+      if (athText) athText.innerText = `$${ath.toFixed(2)}`;
+    }
+
+    if (startOverlay) {
+      startOverlay.classList.remove('mode-start');
+      startOverlay.classList.add('mode-gameover');
+      startOverlay.style.display = 'flex';
+    }
+
+    if (overlayIcon) overlayIcon.innerHTML = '<span class="icon-emoji">💥</span>';
+    if (overlayTitle) overlayTitle.innerText = 'MARGIN CALL!';
+    if (overlaySub) overlaySub.innerText = reason;
+    
+    if (resultBox && finalScore) {
+      resultBox.style.display = 'block';
+      finalScore.innerText = `$${score.toFixed(2)}`;
+    }
+
+    if (startBtn) startBtn.innerHTML = '<span>🔄 RESTART TRADING</span>';
+  }
+
+});
+    
