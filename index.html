@@ -1,132 +1,557 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aegis Global | Enterprise Solutions</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Menggunakan Font Awesome untuk Ikon Profesional -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEGIS GLOBAL — Modern Corporate Profile</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#026597',
+              900: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200">
 
-    <!-- Navigasi Utama -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo"><i class="fa-solid fa-globe"></i> AEGIS GLOBAL</a>
-            <ul class="nav-links">
-                <li><a href="#about">Perusahaan</a></li>
-                <li><a href="#services">Layanan</a></li>
-                <li><a href="#infrastructure">Infrastruktur</a></li>
-            </ul>
-            <button class="menu-btn" id="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
-        </div>
-    </nav>
+  <!-- HEADER / NAVBAR -->
+  <header class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2 font-bold text-xl tracking-tight text-slate-900 dark:text-white">
+        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white font-extrabold text-lg">A</span>
+        <span>AEGIS <span class="text-brand-600">GLOBAL</span></span>
+      </a>
 
-    <!-- Header / Hero Section -->
-    <header class="hero">
-        <div class="hero-content animate-left">
-            <h1>Menghubungkan Dunia, Membangun Masa Depan</h1>
-            <p>Solusi infrastruktur digital dan manajemen korporasi berskala global untuk perusahaan Fortune 500.</p>
-            <a href="#services" class="btn btn-primary">Eksplorasi Solusi</a>
-        </div>
-    </header>
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#bisnis" class="hover:text-brand-600 transition">Lini Bisnis</a>
+        <a href="#proyek" class="hover:text-brand-600 transition">Proyek Unggulan</a>
+        <a href="#inovasi" class="hover:text-brand-600 transition">Inovasi</a>
+        <a href="#berita" class="hover:text-brand-600 transition">Berita</a>
+      </nav>
 
-    <!-- Seksi Tentang Perusahaan (Muncul dari kanan) -->
-    <section id="about" class="section-container">
-        <div class="section-header animate-right">
-            <h2>Skala Operasional Global</h2>
-            <p>Beroperasi di 45 negara dengan lebih dari 10.000 titik server.</p>
-        </div>
-        <div class="grid-2 animate-left">
-            <div class="text-block">
-                <h3>Visi Misi Enterprise</h3>
-                <p>Aegis Global berkomitmen menyediakan ekosistem terpadu bagi perusahaan multinasional. Dari keamanan siber hingga manajemen rantai pasokan berbasis AI, sistem kami menjamin *uptime* 99.99%.</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <i class="fa-solid fa-server"></i>
-                    <h4>99.99%</h4>
-                    <span>Uptime Sistem</span>
-                </div>
-                <div class="stat-box">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h4>Tier 4</h4>
-                    <span>Keamanan Data</span>
-                </div>
-            </div>
-        </div>
-    </section>
+      <!-- Right Actions -->
+      <div class="flex items-center gap-3">
+        <button id="themeToggleBtn" class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800" title="Toggle Dark Mode">
+          <i class="fa-solid fa-moon dark:hidden"></i>
+          <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+        </button>
+        
+        <a href="#kontak" class="hidden sm:inline-flex items-center justify-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-500 transition">
+          Hubungi Kami
+        </a>
 
-    <!-- Seksi Layanan (Muncul dari Kiri dan Kanan) -->
-    <section id="services" class="section-container bg-surface">
-        <div class="section-header animate-left">
-            <h2>Layanan Inti</h2>
-        </div>
-        <div class="grid-3">
-            <div class="card animate-right delay-1">
-                <i class="fa-solid fa-cloud"></i>
-                <h3>Cloud Infrastructure</h3>
-                <p>Skalabilitas tanpa batas dengan arsitektur cloud hibrida untuk operasi data masif.</p>
-            </div>
-            <div class="card animate-left delay-2">
-                <i class="fa-solid fa-microchip"></i>
-                <h3>AI & Analytics</h3>
-                <p>Pemrosesan miliaran data per detik untuk pengambilan keputusan presisi.</p>
-            </div>
-            <div class="card animate-right delay-3">
-                <i class="fa-solid fa-satellite-dish"></i>
-                <h3>Global Connectivity</h3>
-                <p>Jaringan satelit dan fiber optik bawah laut antar benua.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tombol Float Pengaturan -->
-    <button class="settings-fab" id="open-settings">
-        <i class="fa-solid fa-sliders"></i>
-    </button>
-
-    <!-- Panel Pengaturan Interaktif (Fungsional) -->
-    <div class="modal-overlay" id="settings-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fa-solid fa-gear"></i> Sistem Preferensi</h3>
-                <button id="close-settings"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="setting-item">
-                    <div class="setting-text">
-                        <h4>Mode Gelap (Dark Mode)</h4>
-                        <p>Ubah tampilan antarmuka ke mode hemat daya.</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="toggle-theme">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-text">
-                        <h4>Akselerasi Animasi (60fps)</h4>
-                        <p>Matikan untuk mengurangi beban render perangkat.</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="toggle-animation" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 md:hidden dark:border-slate-700 dark:text-slate-300">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2026 Aegis Global Enterprise. Semua Hak Dilindungi.</p>
-        </div>
-    </footer>
+    <!-- Mobile Nav Dropdown -->
+    <div id="mobileMenu" class="hidden border-b border-slate-200 bg-white px-4 py-4 md:hidden dark:border-slate-800 dark:bg-slate-900">
+      <div class="flex flex-col gap-3 font-medium text-slate-700 dark:text-slate-200">
+        <a href="#bisnis" class="mobile-link py-1">Lini Bisnis</a>
+        <a href="#proyek" class="mobile-link py-1">Proyek Unggulan</a>
+        <a href="#inovasi" class="mobile-link py-1">Inovasi</a>
+        <a href="#berita" class="mobile-link py-1">Berita</a>
+        <a href="#kontak" class="mobile-link mt-2 rounded-lg bg-brand-600 py-2.5 text-center text-white font-semibold">Hubungi Kami</a>
+      </div>
+    </div>
+  </header>
 
-    <script src="script.js"></script>
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden bg-slate-900 py-20 text-white sm:py-28">
+    <div class="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(#0284c7_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 rounded-full bg-brand-500/10 px-3.5 py-1 text-xs font-medium text-brand-400 ring-1 ring-inset ring-brand-500/20 mb-4">
+          <i class="fa-solid fa-building"></i> Infrastructure & Corporate Leader
+        </span>
+        <h1 class="text-4xl font-extrabold tracking-tight sm:text-6xl leading-tight">
+          Menghubungkan Nusantara, Membangun Masa Depan.
+        </h1>
+        <p class="mt-6 text-lg text-slate-300 leading-relaxed">
+          Penyedia solusi infrastruktur, konstruksi terpadu, energi terbarukan, dan manajemen properti berskala nasional dengan standar internasional.
+        </p>
+        
+        <!-- Stats -->
+        <div class="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 border-t border-slate-800 pt-8">
+          <div>
+            <div class="text-3xl font-bold text-brand-400">50+</div>
+            <div class="text-xs text-slate-400 mt-1">Tahun Pengalaman</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-brand-400">1,200+</div>
+            <div class="text-xs text-slate-400 mt-1">Proyek Selesai</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-brand-400">34</div>
+            <div class="text-xs text-slate-400 mt-1">Provinsi Terjangkau</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-brand-400">ISO</div>
+            <div class="text-xs text-slate-400 mt-1">9001 & 45001 Certified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: LINI BISNIS (GRID INTERAKTIF) -->
+  <section id="bisnis" class="py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <h2 class="text-xs font-bold tracking-widest text-brand-600 uppercase">Portofolio Usaha</h2>
+          <p class="mt-1 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">Lini Bisnis Utama</p>
+        </div>
+        <p class="mt-2 md:mt-0 text-slate-600 dark:text-slate-400 max-w-md text-sm">
+          Klik pada setiap kartu untuk membuka profil lengkap, kapasitas teknis, dan portofolio sektor.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Grid Item 1 -->
+        <div onclick="openModal('bisnis-1')" class="group cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl hover:border-brand-500 transition-all duration-300 dark:border-slate-800 dark:bg-slate-800/80">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-900/50 dark:text-brand-400 mb-5 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-road text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition">Konstruksi & Infrastruktur</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+            Pembangunan jalan tol, jembatan bentang panjang, rel kereta cepat, dan fasilitas bandara udara.
+          </p>
+          <div class="mt-6 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+            <span>Lihat Detail Lini Bisnis</span>
+            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Grid Item 2 -->
+        <div onclick="openModal('bisnis-2')" class="group cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl hover:border-brand-500 transition-all duration-300 dark:border-slate-800 dark:bg-slate-800/80">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400 mb-5 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-[#0284c7] fa-city text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition">Gedung & Properti</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+            Pengembangan kawasan komersial, gedung perkantoran bertingkat tinggi, apartemen, dan smart city.
+          </p>
+          <div class="mt-6 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+            <span>Lihat Detail Lini Bisnis</span>
+            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Grid Item 3 -->
+        <div onclick="openModal('bisnis-3')" class="group cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl hover:border-brand-500 transition-all duration-300 dark:border-slate-800 dark:bg-slate-800/80">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400 mb-5 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-bolt text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition">EPC & Energi Terbarukan</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+            Pembangkit listrik tenaga surya, hidro, industri pengolahan limbah, dan infrastruktur migas.
+          </p>
+          <div class="mt-6 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+            <span>Lihat Detail Lini Bisnis</span>
+            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: PROYEK UNGGULAN (MODAL CASE STUDY) -->
+  <section id="proyek" class="bg-slate-100/70 py-16 sm:py-24 dark:bg-slate-800/40">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-12">
+        <h2 class="text-xs font-bold tracking-widest text-brand-600 uppercase">Rekam Jejak</h2>
+        <p class="mt-1 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">Proyek Unggulan</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Proyek 1 -->
+        <div onclick="openModal('proyek-1')" class="group cursor-pointer overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition duration-300 dark:border-slate-800 dark:bg-slate-800">
+          <div class="relative h-64 bg-slate-800 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80" alt="Jembatan" class="h-full w-full object-cover group-hover:scale-105 transition duration-500">
+            <span class="absolute top-4 left-4 rounded-full bg-brand-600/90 backdrop-blur px-3 py-1 text-xs font-medium text-white">Infrastruktur</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition">Jembatan Sentosa Skyway</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Lokasi: Jawa Barat | Nilai Kontrak: Rp 2.4 Triliun</p>
+            <div class="mt-4 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+              <span>Buka Dokumen Proyek</span>
+              <i class="fa-solid fa-expand ml-2"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proyek 2 -->
+        <div onclick="openModal('proyek-2')" class="group cursor-pointer overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition duration-300 dark:border-slate-800 dark:bg-slate-800">
+          <div class="relative h-64 bg-slate-800 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="Gedung Modern" class="h-full w-full object-cover group-hover:scale-105 transition duration-500">
+            <span class="absolute top-4 left-4 rounded-full bg-emerald-600/90 backdrop-blur px-3 py-1 text-xs font-medium text-white">Smart Building</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition">Menara AEGIS Financial Center</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Lokasi: Jakarta Pusat | Sertifikasi: Green Building Platinum</p>
+            <div class="mt-4 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+              <span>Buka Dokumen Proyek</span>
+              <i class="fa-solid fa-expand ml-2"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL CONTAINER DENGAN BACKDROP BLUR (SINGLE MODAL ENGINE) -->
+  <div id="globalModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 lg:p-8">
+    <!-- Backdrop -->
+    <div id="modalBackdrop" onclick="closeModal()" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Modal Dialog -->
+    <div class="relative z-10 w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-h-[90vh] flex flex-col">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+        <h3 id="modalTitle" class="text-lg font-bold text-slate-900 dark:text-white">Judul Modal</h3>
+        <button onclick="closeModal()" class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div id="modalBody" class="overflow-y-auto p-6 space-y-4 text-sm text-slate-600 dark:text-slate-300">
+        <!-- Konten diisi secara dinamis via JavaScript -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end border-t border-slate-200 px-6 py-3 bg-slate-50 dark:bg-slate-900/50 dark:border-slate-800">
+        <button onclick="closeModal()" class="rounded-lg bg-slate-200 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT MODAL DATA & CONTROLLER -->
+  <script>
+    // Data Lengkap Modal untuk Setiap Grid
+    const modalData = {
+
+        // Masukkan item berikut ke dalam variabel modalData = { ... }
+
+'berita-1': {
+  title: 'Siaran Pers: Kontrak Tol Hijau Rp 4,5 Triliun',
+  content: `
+    <div class="mb-4 overflow-hidden rounded-xl">
+      <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" class="h-64 w-full object-cover">
+    </div>
+    <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
+      <span><i class="fa-solid fa-user-pen mr-1"></i> Hubungan Masyarakat (PR)</span>
+      <span>•</span>
+      <span><i class="fa-regular fa-calendar mr-1"></i> 28 Oktober 2026</span>
+    </div>
+    <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+      <p class="font-semibold text-base text-slate-900 dark:text-white">
+        JAKARTA — AEGIS GLOBAL kembali memperkuat posisinya sebagai pengembang infrastruktur nasional setelah resmi memenangkan tender proyek pembangunan Tol Hijau Lintasan Nusantara Senilai Rp 4,5 Triliun.
+      </p>
+      <p>
+        Proyek sepanjang 68 kilometer ini mengusung konsep *Eco-Highway* pertama yang mengintegrasikan panel surya sepanjang pembatas jalan untuk menyuplai daya sistem penerangan dan rest area secara mandiri.
+      </p>
+      <blockquote class="p-4 border-l-4 border-brand-600 bg-slate-100 dark:bg-slate-800 italic rounded-r-lg my-4">
+        "Proyek ini tidak sekadar membangun konektivitas fisik, melainkan menetapkan standar baru infrastruktur ramah lingkungan di Indonesia," ujar Direktur Utama AEGIS GLOBAL.
+      </blockquote>
+      <p>
+        Pengerjaan konstruksi dijadwalkan dimulai pada kuartal pertama tahun depan dengan target penyelesaian secara bertahap hingga akhir tahun 2028.
+      </p>
+    </div>
+  `
+},
+
+'berita-2': {
+  title: 'Artikel Tekno: Efisiensi Konstruksi Berbasis BIM 5D',
+  content: `
+    <div class="mb-4 overflow-hidden rounded-xl">
+      <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" class="h-64 w-full object-cover">
+    </div>
+    <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
+      <span><i class="fa-solid fa-user-pen mr-1"></i> Tim Inovasi & Digitalisasi</span>
+      <span>•</span>
+      <span><i class="fa-regular fa-calendar mr-1"></i> 15 Oktober 2026</span>
+    </div>
+    <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+      <p>
+        Transformasi digital di sektor konstruksi bukan lagi sekadar tren, melainkan kebutuhan mendesak untuk menjaga presisi dan efisiensi pengeluaran anggaran proyek.
+      </p>
+      <h4 class="font-bold text-slate-900 dark:text-white text-base">Manfaat Utama BIM 5D:</h4>
+      <ul class="list-disc pl-5 space-y-2">
+        <li><strong>Simulasi Biaya Real-Time:</strong> Mengintegrasikan jadwal proyek dengan kalkulasi anggaran otomatis.</li>
+        <li><strong>Deteksi Benturan (Clash Detection):</strong> Menemukan potensi kesalahan desain pipa/struktur sebelum pekerjaan fisik dimulai di lapangan.</li>
+        <li><strong>Pengurangan Potongan Material Sisanya (Waste):</strong> Akurasi pemesanan beton dan baja hingga 98%.</li>
+      </ul>
+    </div>
+  `
+},
+
+'berita-3': {
+  title: 'Laporan ESG Q3: Pencapaian Target Reduksi Karbon',
+  content: `
+    <div class="mb-4 overflow-hidden rounded-xl">
+      <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80" class="h-64 w-full object-cover">
+    </div>
+    <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
+      <span><i class="fa-solid fa-user-pen mr-1"></i> Komite ESG & K3L</span>
+      <span>•</span>
+      <span><i class="fa-regular fa-calendar mr-1"></i> 02 Oktober 2026</span>
+    </div>
+    <div class="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed">
+      <p>
+        AEGIS GLOBAL merilis laporan capaian *Environmental, Social, and Governance* (ESG) untuk kuartal ketiga tahun berjalan dengan hasil yang signifikan.
+      </p>
+      <div class="grid grid-cols-2 gap-4 my-4">
+        <div class="bg-emerald-50 dark:bg-emerald-950/40 p-4 rounded-xl border border-emerald-200 dark:border-emerald-800">
+          <span class="block text-2xl font-bold text-emerald-600 dark:text-emerald-400">-30%</span>
+          <span class="text-xs text-slate-600 dark:text-slate-400">Emisi Karbon Operasional</span>
+        </div>
+        <div class="bg-brand-50 dark:bg-brand-950/40 p-4 rounded-xl border border-brand-200 dark:border-brand-800">
+          <span class="block text-2xl font-bold text-brand-600 dark:text-brand-400">100%</span>
+          <span class="text-xs text-slate-600 dark:text-slate-400">Nihil Kecelakaan Kerja (Zero Harm)</span>
+        </div>
+      </div>
+      <p>
+        Pencapaian ini didukung oleh modernisasi alat berat ramah lingkungan dan kebijakan daur ulang sisa material pada seluruh area kerja proyek.
+      </p>
+    </div>
+  `
+}
+    
+
+        
+      'bisnis-1': {
+        title: 'Lini Bisnis: Konstruksi & Infrastruktur',
+        content: `
+          <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80" class="w-full h-48 object-cover rounded-xl mb-4">
+          <p class="font-medium text-slate-900 dark:text-white">Divisi Infrastruktur AEGIS GLOBAL menangani proyek skala nasional dengan spesifikasi kompleks tinggi.</p>
+          <ul class="list-disc pl-5 space-y-2 mt-3">
+            <li><strong>Jalan Tol & Transpotasi:</strong> Pengalaman membangun lebih dari 450 km jalan bebas hambatan.</li>
+            <li><strong>Struktur Jembatan:</strong> Spesialis bentang panjang dengan teknologi precast prestressed concrete.</li>
+            <li><strong>Fasilitas Pelabuhan & Keberangkatan:</strong> Pembangunan dermaga kontainer dan terminal bandara modern.</li>
+          </ul>
+          <div class="mt-4 p-4 bg-brand-50 dark:bg-brand-900/30 rounded-lg">
+            <span class="font-semibold text-brand-600 dark:text-brand-400">Sertifikasi Utama:</span> ISO 9001:2015, OHSAS 18001, ISO 14001.
+          </div>
+        `
+      },
+      'bisnis-2': {
+        title: 'Lini Bisnis: Gedung & Properti',
+        content: `
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" class="w-full h-48 object-cover rounded-xl mb-4">
+          <p class="font-medium text-slate-900 dark:text-white">Pengembangan gedung ramah lingkungan (Green Building) berstandar internasional.</p>
+          <ul class="list-disc pl-5 space-y-2 mt-3">
+            <li> High-rise Commercial Office & Apartments.</li>
+            <li> Rumah Sakit Rujukan Nasional & Kampus Universitas.</li>
+            <li> Integrasi sistem Building Information Modeling (BIM) Level 5D.</li>
+          </ul>
+        `
+      },
+      'bisnis-3': {
+        title: 'Lini Bisnis: EPC & Energi Terbarukan',
+        content: `
+          <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80" class="w-full h-48 object-cover rounded-xl mb-4">
+          <p class="font-medium text-slate-900 dark:text-white">Pelopor transformasi energi bersih dan rekayasa industri industri terpadu.</p>
+          <ul class="list-disc pl-5 space-y-2 mt-3">
+            <li> PLTS Fotovoltaik Skala Besar (Utility Scale Solar Farm).</li>
+            <li> Pembangkit Listrik Tenaga Minihidro (PLTM).</li>
+            <li> Fasilitas Pengolahan Air Limbah & Desalinasi.</li>
+          </ul>
+        `
+      },
+      'proyek-1': {
+        title: 'Dokumen Proyek: Jembatan Sentosa Skyway',
+        content: `
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"><span class="block text-xs text-slate-400">Tahun Selesai</span><strong class="text-slate-900 dark:text-white">2024</strong></div>
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"><span class="block text-xs text-slate-400">Panjang Bentang</span><strong class="text-slate-900 dark:text-white">1.8 km</strong></div>
+          </div>
+          <p>Jembatan ikonik yang menghubungkan dua pulau ekonomi strategis dengan teknologi Cable-Stayed canggih yang dirancang tahan terhadap guncangan gempa hingga 8.5 SR.</p>
+        `
+      },
+      'proyek-2': {
+        title: 'Dokumen Proyek: Menara AEGIS Financial Center',
+        content: `
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"><span class="block text-xs text-slate-400">Tinggi Gedung</span><strong class="text-slate-900 dark:text-white">52 Lantai</strong></div>
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"><span class="block text-xs text-slate-400">Sertifikasi</span><strong class="text-slate-900 dark:text-white">GREENMARK PLATINUM</strong></div>
+          </div>
+          <p>Gedung perkantoran pintar yang dilengkapi dengan sistem pendingin efisiensi tinggi serta fasad panel surya yang mampu memasok 25% kebutuhan listrik internal gedung.</p>
+        `
+      }
+    };
+
+    // Modal Controls
+    const globalModal = document.getElementById('globalModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+
+    function openModal(key) {
+      const data = modalData[key];
+      if (!data) return;
+
+      modalTitle.innerText = data.title;
+      modalBody.innerHTML = data.content;
+      globalModal.classList.remove('hidden');
+      globalModal.classList.add('flex');
+      document.body.style.overflow = 'hidden'; // Kunci scroll layar utama
+    }
+
+    function closeModal() {
+      globalModal.classList.add('hidden');
+      globalModal.classList.remove('flex');
+      document.body.style.overflow = 'auto'; // Buka scroll layar utama
+    }
+
+    // Toggle Mobile Menu
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    // Dark Mode Toggle Logic
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    // Close Modal via ESC key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !globalModal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  </script>
+
+    <!-- SECTION: BERITA & PUBLIKASI KORPORAT -->
+<section id="berita" class="py-16 sm:py-24 border-t border-slate-200 dark:border-slate-800">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div>
+        <h2 class="text-xs font-bold tracking-widest text-brand-600 uppercase">Kabar Korporasi</h2>
+        <p class="mt-1 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">Berita & Publikasi Terbaru</p>
+      </div>
+      <p class="mt-2 md:mt-0 text-slate-600 dark:text-slate-400 max-w-md text-sm">
+        Ikuti perkembangan proyek, siaran pers resmi, dan artikel inovasi teknologi dari AEGIS GLOBAL.
+      </p>
+    </div>
+
+    <!-- Grid Berita (3 Kolom) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Kartu Berita 1 -->
+      <article onclick="openModal('berita-1')" class="group cursor-pointer flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:border-brand-500 transition-all duration-300 dark:border-slate-800 dark:bg-slate-800">
+        <div class="relative h-52 overflow-hidden bg-slate-900">
+          <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" alt="Penandatanganan Kontrak" class="h-full w-full object-cover group-hover:scale-105 transition duration-500">
+          <span class="absolute top-4 left-4 rounded-full bg-brand-600 px-3 py-1 text-xs font-medium text-white shadow">Siaran Pers</span>
+        </div>
+        <div class="flex flex-1 flex-col justify-between p-6">
+          <div>
+            <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-3">
+              <span><i class="fa-regular fa-calendar mr-1"></i> 28 Oktober 2026</span>
+              <span>•</span>
+              <span><i class="fa-regular fa-clock mr-1"></i> 3 mnt baca</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition line-clamp-2">
+              AEGIS GLOBAL Resmi Raih Kontrak Pembangunan Tol Hijau Rp 4,5 Triliun
+            </h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+              Konsorsium perusahaan berhasil mengamankan proyek strategis nasional infrastruktur berkelanjutan yang menerapkan standar *zero emission*.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+            <span>Baca Selengkapnya</span>
+            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+      </article>
+
+      <!-- Kartu Berita 2 -->
+      <article onclick="openModal('berita-2')" class="group cursor-pointer flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:border-brand-500 transition-all duration-300 dark:border-slate-800 dark:bg-slate-800">
+        <div class="relative h-52 overflow-hidden bg-slate-900">
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="Inovasi BIM" class="h-full w-full object-cover group-hover:scale-105 transition duration-500">
+          <span class="absolute top-4 left-4 rounded-full bg-emerald-600 px-3 py-1 text-xs font-medium text-white shadow">Inovasi & Tekno</span>
+        </div>
+        <div class="flex flex-1 flex-col justify-between p-6">
+          <div>
+            <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-3">
+              <span><i class="fa-regular fa-calendar mr-1"></i> 15 Oktober 2026</span>
+              <span>•</span>
+              <span><i class="fa-regular fa-clock mr-1"></i> 5 mnt baca</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition line-clamp-2">
+              Penerapan Technology BIM 5D: Efisiensi Biaya Konstruksi Hingga 22%
+            </h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+              Studi kasus implementasi *Building Information Modeling* digital twin pada proyek gedung bertingkat tinggi di wilayah perkotaan.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+            <span>Baca Selengkapnya</span>
+            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+      </article>
+
+      <!-- Kartu Berita 3 -->
+      <article onclick="openModal('berita-3')" class="group cursor-pointer flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:border-brand-500 transition-all duration-300 dark:border-slate-800 dark:bg-slate-800">
+        <div class="relative h-52 overflow-hidden bg-slate-900">
+          <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80" alt="Pembangkit Listrik Surya" class="h-full w-full object-cover group-hover:scale-105 transition duration-500">
+          <span class="absolute top-4 left-4 rounded-full bg-amber-600 px-3 py-1 text-xs font-medium text-white shadow">ESG & Keberlanjutan</span>
+        </div>
+        <div class="flex flex-1 flex-col justify-between p-6">
+          <div>
+            <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-3">
+              <span><i class="fa-regular fa-calendar mr-1"></i> 02 Oktober 2026</span>
+              <span>•</span>
+              <span><i class="fa-regular fa-clock mr-1"></i> 4 mnt baca</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition line-clamp-2">
+              Laporan ESG Q3: Reduksi Emisi Karbon Operasional Sebesar 30%
+            </h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+              Pencapaian komitmen keberlanjutan perusahaan melalui penggunaan material daur ulang dan transisi armada operasional listrik.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+            <span>Baca Selengkapnya</span>
+            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+    
 </body>
 </html>
